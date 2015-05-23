@@ -1,0 +1,11 @@
+{
+  "name": "Caravaggio`",
+  "version": "0.0.1",
+  "dependencies": {
+    "fontawesome":      "~4.3.0",
+    "bootstrap":        "~3.2.0",
+    "jquery":           "~1.11",
+    "getusermedia.js":  "addyosmani/getUserMedia.js#v1.0rc2",
+    "webgl-utils":      "https://raw.githubusercontent.com/greggman/webgl-fundamentals/1142336198d6a0dceb0213e6aa2a976903315630/webgl/lessons/resources/lesson-utils.js"
+  }
+}

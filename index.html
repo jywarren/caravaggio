@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" manifest="index.manifest">
+  <head>
+    
+    <title>Caravaggio</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A camera app with lighting effects inspired by Caravaggio.">
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="caravaggio.css" rel="stylesheet">
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/getusermedia.js/dist/getUserMedia.min.js"></script>
+    <script src="webgl-utils.js"></script>
+
+    <script src="caravaggio.js"></script>
+
+    <script type="x-shader/x-vertex" id="shader-vs"></script>
+    <script type="x-shader/x-fragment" id="shader-fs-template"></script>
+    <script type="x-shader/x-fragment" id="shader-fs"></script>
+
+  </head>
+
+  <body>
+  
+    <div class="">
+
+      <div style="display:none;"><div id="webcam"></div></div>
+      <canvas id="image"></canvas>
+      <a id="download"></a>
+
+    </div>
+
+    <script>
+      jQuery(document).ready(function($) {
+        // initialize
+      })
+    </script>
+
+  </body>
+
+</html>
