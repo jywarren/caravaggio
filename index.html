@@ -24,6 +24,15 @@
   
     <div class="">
 
+      <div class="program">
+        <textarea cols="35" rows="8" class="program">dark = 120;
+r = lr;
+g = lg;
+b = lb;
+a = 255;</textarea>
+        <p><a class="btn btn-primary" onClick="$T.set_program($('textarea.program').html())">Run</a></p>
+      </div>
+
       <div style="display:none;"><div id="webcam"></div></div>
       <canvas id="canvas"></canvas>
       <canvas id="original"></canvas>

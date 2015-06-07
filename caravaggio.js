@@ -137,35 +137,59 @@ capture: function() {
     $T.liveImg = $T.lctx.getImageData(0,0,$T.width,$T.height);
 
     for (i=0;i<(4*$T.width*$T.height);i+=4) { 
-      lr = $T.liveImg.data[i+0]
-      lg = $T.liveImg.data[i+1]
-      lb = $T.liveImg.data[i+2]
-      or = $T.originalImg.data[i+0]
-      og = $T.originalImg.data[i+1]
-      ob = $T.originalImg.data[i+2]
+      var ldata = $T.liveImg.data,
+          odata = $T.originalImg.data,
+          data  = $T.displayImg.data,
+          lr = ldata[i+0],
+          lg = ldata[i+1],
+          lb = ldata[i+2],
+          or = odata[i+0],
+          og = odata[i+1],
+          ob = odata[i+2],
+          r, g, b, a, 
+          diff = Math.abs( (lr - or)
+                         + (lg - og)
+                         + (lb - ob) )
+                         / (255.00 * 3);
 
-      var darken = 140;
-      var diff = Math.abs((lr-or)+(lg-og)+(lb-ob))/(255.00*3);
+      // do all this into a function 
+      // users can modify at runtime:
+      $T.c = $T.program(r,g,b,a,lr,lg,lb,or,og,ob,diff);
 
-//     move all this into a function users can write realtime 
+      // copy it back in
+      data[i+0] = $T.c[0];
+      data[i+1] = $T.c[1];
+      data[i+2] = $T.c[2];
+      data[i+3] = $T.c[3];
 
-      // knock out original color proportionally to diff
-      $T.displayImg.data[i+0] = (or)-darken;
-      $T.displayImg.data[i+1] = (og)-darken;
-      $T.displayImg.data[i+2] = (ob)-darken;
-
-      // add new color proportionally to diff
-      //if (diff > 0.1) {
-        $T.displayImg.data[i+0] += (lr)*diff;
-        $T.displayImg.data[i+1] += (lg)*diff;
-        $T.displayImg.data[i+2] += (lb)*diff;
-      //}
-      $T.displayImg.data[i+3] = 255;
     } 
     $T.clear(); 
     $T.ctx.putImageData($T.displayImg,0,0);
 
   },
+
+  set_program: function(program) {
+    eval("$T.program = function(r,g,b,a,lr,lg,lb,or,og,ob,diff){"+program+"\nreturn [r,g,b,a];}");
+  },
+
+  program: function(r,g,b,a,lr,lg,lb,or,og,ob,diff) {
+    dark = 20;
+
+    // knock out original color proportionally to diff
+    r = or-dark;
+    g = og-dark;
+    b = ob-dark;
+
+    // add new color proportionally to diff
+    //if (diff > 0.1) {
+      r += lr*diff;
+      g += lg*diff;
+      b += lb*diff;
+    //}
+    a = 255;
+    return [r,g,b,a];
+  },
+
   clear: function() {
     $T.ctx.clearRect(0,0,$T.width,$T.height)
   }

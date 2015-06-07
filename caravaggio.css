@@ -8,3 +8,9 @@ body {
 #original, #live {
   display:none;
 }
+
+div.program {
+  position:absolute;
+  right:10px;
+  padding:10px;
+}
