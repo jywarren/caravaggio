@@ -173,20 +173,19 @@ capture: function() {
   },
 
   program: function(r,g,b,a,lr,lg,lb,or,og,ob,diff) {
-    dark = 20;
 
-    // knock out original color proportionally to diff
-    r = or-dark;
-    g = og-dark;
-    b = ob-dark;
+dark = 120;
 
-    // add new color proportionally to diff
-    //if (diff > 0.1) {
-      r += lr*diff;
-      g += lg*diff;
-      b += lb*diff;
-    //}
-    a = 255;
+r = or-dark;
+g = og-dark;
+b = ob-dark;
+
+diff*=10;
+r += lr*diff-50;
+g += lg*diff-50;
+b += lb*diff-50;
+a = 255;
+
     return [r,g,b,a];
   },
 
