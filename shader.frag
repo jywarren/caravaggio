@@ -3,7 +3,7 @@ precision highp float;
 varying vec2 vTextureCoord;
 
 uniform sampler2D uSampler;
-uniform float uSlider;
+uniform sampler2D uBaseSampler;
 uniform int uNdvi;
 uniform int uSelectColormap;
 uniform int uHsv;
@@ -30,6 +30,7 @@ vec4 hsv2rgb(vec4 c)
 void main(void)
 {
     vec4 color = texture2D(uSampler, vTextureCoord);
+    vec4 baseColor = texture2D(uBaseSampler, vTextureCoord);
     if (uColormap == 1)
     {
         color = vec4(vTextureCoord, 0.0, 0.0);
@@ -38,7 +39,6 @@ void main(void)
     {
         color = rgb2hsv(color);
     }
-    float x = uSlider;
     float r = color.r * 0.2;
     float g = color.g * 0.15;
     float b = color.b * 0.1;

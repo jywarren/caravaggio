@@ -33,6 +33,8 @@ waitForShadersToLoad = 0;
 
 imgContext = null;
 
+baseImage = false;
+
 createBuffer = function(ctx, data) {
   var buffer, gl;
   gl = ctx.gl;
@@ -84,6 +86,7 @@ createContext = function(mode, selColormap, colormap, slider, canvasName) {
     ctx.vertexBuffer = createBuffer(ctx, vertices);
     ctx.framebuffer = ctx.gl.createFramebuffer();
     ctx.imageTexture = createTexture(ctx, ctx.gl.TEXTURE0);
+    ctx.baseImageTexture = createTexture(ctx, ctx.gl.TEXTURE1);
     return ctx;
   } else {
     return null;
@@ -91,7 +94,7 @@ createContext = function(mode, selColormap, colormap, slider, canvasName) {
 };
 
 drawScene = function(ctx, returnImage) {
-  var gl, pColormap, pHsvUniform, pNdviUniform, pSampler, pSelColormapUniform, pSliderUniform, pVertexPosition;
+  var gl, pColormap, pHsvUniform, pNdviUniform, pSampler, pBaseSampler, pSelColormapUniform, pVertexPosition;
   if (!returnImage) {
     requestAnimFrame(function() {
       return drawScene(ctx, false);
@@ -117,8 +120,8 @@ drawScene = function(ctx, returnImage) {
     pSampler = gl.getUniformLocation(ctx.shaderProgram, "uSampler");
     gl.uniform1i(pSampler, 0);
 
-    pSliderUniform = gl.getUniformLocation(ctx.shaderProgram, "uSlider");
-    gl.uniform1f(pSliderUniform, ctx.slider);
+    pBaseSampler = gl.getUniformLocation(ctx.shaderProgram, "uBaseSampler");
+    gl.uniform1i(pBaseSampler, 0);
 
     /* may be unnecessary NDVI stuff? */
     pNdviUniform = gl.getUniformLocation(ctx.shaderProgram, "uNdvi");
@@ -298,6 +301,11 @@ camera = {
     var video;
     if (camera.options.context === "webrtc") {
       video = document.getElementsByTagName("video")[0];
+
+      if (!baseImage) {
+        baseImage = video;
+      }
+
       glUpdateImage(video);
       return $("#webcam").hide();
     } else if (camera.options.context === "flash") {
