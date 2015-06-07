@@ -1,0 +1,13 @@
+{
+  "name": "webgl-utils",
+  "_cacheHeaders": {
+    "ETag": "\"9e0289c75f5e4c9c5e5809c76306f455d82355bd\"",
+    "Content-Length": "3187",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:9e0289c75",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/greggman/webgl-fundamentals/1142336198d6a0dceb0213e6aa2a976903315630/webgl/lessons/resources/lesson-utils.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/greggman/webgl-fundamentals/1142336198d6a0dceb0213e6aa2a976903315630/webgl/lessons/resources/lesson-utils.js"
+}
