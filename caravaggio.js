@@ -191,30 +191,28 @@ a = 255;
 
   clear: function() {
     $T.ctx.clearRect(0,0,$T.width,$T.height)
+  },
+
+  download: function() {
+    var event, format, lnk;
+    lnk = document.createElement("a");
+    lnk.href = $T.ctx.canvas.toDataURL("image/jpeg");
+    if (lnk.href.match('image/jpeg')) {
+      format = "jpg";
+    } else {
+      format = "png";
+    }
+    lnk.download = (new Date()).toISOString().replace(/:/g, "_") + "." + format;
+    if (document.createEvent) {
+      event = document.createEvent("MouseEvents");
+      event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      lnk.dispatchEvent(event);
+    } else if (lnk.fireEvent) {
+      lnk.fireEvent("onclick");
+    }
+    return true;
   }
 }
-
-/* Utilities */
-
-downloadImage = function() {
-  var event, format, lnk;
-  lnk = document.createElement("a");
-  lnk.href = getCurrentImage();
-  if (lnk.href.match('image/jpeg')) {
-    format = "jpg";
-  } else {
-    format = "png";
-  }
-  lnk.download = (new Date()).toISOString().replace(/:/g, "_") + "." + format;
-  if (document.createEvent) {
-    event = document.createEvent("MouseEvents");
-    event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    lnk.dispatchEvent(event);
-  } else if (lnk.fireEvent) {
-    lnk.fireEvent("onclick");
-  }
-  return true;
-};
 
 $('#canvas').click(function(){ $T.resetOrig = true });
 
