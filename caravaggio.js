@@ -71,10 +71,13 @@ createContext = function(mode, selColormap, colormap, slider, canvasName) {
   ctx.canvas = document.getElementById(canvasName);
   ctx.canvas.width = camera.options.width
   ctx.canvas.height = camera.options.height
+
+  /* if context is lost, which apparently happens sometimes */
   ctx.canvas.addEventListener("webglcontextlost", (function(event) {
     return event.preventDefault();
   }), false);
   ctx.canvas.addEventListener("webglcontextrestored", glRestoreContext, false);
+
   ctx.gl = getWebGLContext(ctx.canvas);
   if (ctx.gl) {
     ctx.gl.getExtension("OES_texture_float");
@@ -98,28 +101,39 @@ drawScene = function(ctx, returnImage) {
     ctx.updateShader = false;
     generateShader(ctx);
   }
+
+  /* create GL buffer */
   gl = ctx.gl;
   gl.viewport(0, 0, ctx.canvas.width, ctx.canvas.height);
   gl.useProgram(ctx.shaderProgram);
-
   gl.bindBuffer(gl.ARRAY_BUFFER, ctx.vertexBuffer);
   pVertexPosition = gl.getAttribLocation(ctx.shaderProgram, "aVertexPosition");
   gl.enableVertexAttribArray(pVertexPosition);
   gl.vertexAttribPointer(pVertexPosition, ctx.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-  pSampler = gl.getUniformLocation(ctx.shaderProgram, "uSampler");
-  gl.uniform1i(pSampler, 0);
-  pSliderUniform = gl.getUniformLocation(ctx.shaderProgram, "uSlider");
-  gl.uniform1f(pSliderUniform, ctx.slider);
+  /* I believe this is loading a bunch of "samples" aka textures into the shader, under given variable names */
 
-  pNdviUniform = gl.getUniformLocation(ctx.shaderProgram, "uNdvi");
-  gl.uniform1i(pNdviUniform, (ctx.mode === "ndvi" || ctx.colormap ? 1 : 0));
-  pSelColormapUniform = gl.getUniformLocation(ctx.shaderProgram, "uSelectColormap");
-  gl.uniform1i(pSelColormapUniform, ctx.selColormap);
-  pHsvUniform = gl.getUniformLocation(ctx.shaderProgram, "uHsv");
-  gl.uniform1i(pHsvUniform, (ctx.mode === "hsv" ? 1 : 0));
-  pColormap = gl.getUniformLocation(ctx.shaderProgram, "uColormap");
-  gl.uniform1i(pColormap, (ctx.colormap ? 1 : 0));
+    /* This seems to be the actual camera video feed. */
+    pSampler = gl.getUniformLocation(ctx.shaderProgram, "uSampler");
+    gl.uniform1i(pSampler, 0);
+
+    pSliderUniform = gl.getUniformLocation(ctx.shaderProgram, "uSlider");
+    gl.uniform1f(pSliderUniform, ctx.slider);
+
+    /* may be unnecessary NDVI stuff? */
+    pNdviUniform = gl.getUniformLocation(ctx.shaderProgram, "uNdvi");
+    gl.uniform1i(pNdviUniform, (ctx.mode === "ndvi" || ctx.colormap ? 1 : 0));
+ 
+    pSelColormapUniform = gl.getUniformLocation(ctx.shaderProgram, "uSelectColormap");
+    gl.uniform1i(pSelColormapUniform, ctx.selColormap);
+ 
+    /* may be unnecessary NDVI stuff? */
+    pHsvUniform = gl.getUniformLocation(ctx.shaderProgram, "uHsv");
+    gl.uniform1i(pHsvUniform, (ctx.mode === "hsv" ? 1 : 0));
+ 
+    pColormap = gl.getUniformLocation(ctx.shaderProgram, "uColormap");
+    gl.uniform1i(pColormap, (ctx.colormap ? 1 : 0));
+
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / vertices.itemSize);
   if (returnImage) {
     return ctx.canvas.toDataURL("image/jpeg");
