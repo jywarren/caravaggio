@@ -24,7 +24,7 @@
   
     <div class="">
 
-      <div class="program">
+      <div class="program" style="display:none;">
         <textarea cols="50" rows="20" class="program">
 dark = 120;
 
@@ -38,14 +38,22 @@ g += lg*diff-50;
 b += lb*diff-50;
 a = 255;
 </textarea>
+
         <p><a class="btn btn-primary" onClick="$T.set_program($('textarea.program').val())">Run</a></p>
+        <p><a class="btn btn-default" onClick="$('div.program').hide()">Close</a></p>
+
       </div>
 
       <div style="display:none;"><div id="webcam"></div></div>
       <canvas id="canvas"></canvas>
       <canvas id="original"></canvas>
       <canvas id="live"></canvas>
-      <a id="download"></a>
+
+        
+      <p>
+        <a class="btn btn-small btn-default download" onClick="$T.download()">Download</a>
+        <a class="btn btn-default" onClick="$('div.program').toggle()">Modify</a>
+      </p>
 
     </div>
 
